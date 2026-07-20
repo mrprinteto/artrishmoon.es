@@ -1,0 +1,67 @@
+---
+import Container from './Container.astro';
+import Section from './Section.astro';
+import SectionTitle from './SectionTitle.astro';
+import Sparkles from './Sparkles.astro';
+
+const steps = [
+  {
+    icon: 'fa-solid fa-comments',
+    title: 'Cuéntame tu idea',
+    text: 'Escríbeme por el formulario o por Instagram y cuéntame qué estás buscando: para quién es, qué colores te gustan y para cuándo lo necesitas.',
+  },
+  {
+    icon: 'fa-solid fa-pen-nib',
+    title: 'Diseñamos juntas',
+    text: 'Te propongo un boceto o referencia y ajustamos los detalles hasta que quede exactamente como lo imaginas.',
+  },
+  {
+    icon: 'fa-solid fa-hammer',
+    title: 'Lo hago a mano',
+    text: 'Corto, pinto y acabo cada pieza con mimo, cuidando cada detalle como si fuera un regalo para mi propia familia.',
+  },
+  {
+    icon: 'fa-solid fa-box-open',
+    title: 'Lo recibes en casa',
+    text: 'Empaqueto con cuidado y te lo envío listo para sorprender en el día especial.',
+  },
+];
+---
+
+<Section id="proceso">
+  <Sparkles />
+  <Container>
+    <SectionTitle
+      title="El proceso"
+      subtitle="Cada encargo es distinto, pero el proceso para lograrlo es siempre el mismo: cercano, cuidado y pensado para ti."
+    />
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+      <div
+        class="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-0 border-t-2 border-dashed -z-10"
+        style="border-color: var(--border);"
+        aria-hidden="true"
+      >
+      </div>
+      {
+        steps.map((step, i) => (
+          <div class="animate-on-scroll relative text-center" data-delay={String((i % 4) + 1)}>
+            <div
+              class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-5 text-xl relative"
+              style="background-color: var(--surface-card); color: var(--accent); border: 2px dashed var(--accent-soft);"
+            >
+              <i class={step.icon} aria-hidden="true" />
+            </div>
+            <span class="font-sans font-semibold text-sm tracking-wide uppercase block mb-1" style="color: var(--accent);">
+              Paso {i + 1}
+            </span>
+            <h3 class="font-semibold mb-2" style="color: var(--text); font-family: 'Noto Serif', serif;">
+              {step.title}
+            </h3>
+            <p class="text-sm" style="color: var(--text-muted);">{step.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Container>
+</Section>

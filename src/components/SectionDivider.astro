@@ -1,0 +1,18 @@
+---
+/**
+ * SectionDivider.astro — a scalloped, hand-cut-paper-style divider between
+ * sections that change background color.
+ */
+interface Props {
+  color?: string; // CSS color to draw the scallops in (the color of the *upcoming* section)
+  flip?: boolean; // flips the scallops to point the other way
+}
+const { color = 'var(--surface)', flip = false } = Astro.props;
+---
+
+<div
+  class:list={['scallop-divider', flip && 'rotate-180']}
+  style={`background-image: radial-gradient(circle at 16px ${flip ? '0' : '22px'}, transparent 15px, ${color} 15.5px);`}
+  aria-hidden="true"
+>
+</div>

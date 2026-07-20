@@ -1,0 +1,43 @@
+---
+import Container from './Container.astro';
+
+const socials = [
+  { name: 'Instagram', icon: 'fa-brands fa-instagram', href: 'https://instagram.com/artrishmoon' },
+  { name: 'TikTok', icon: 'fa-brands fa-tiktok', href: 'https://tiktok.com/@artrishmoon' },
+  { name: 'YouTube', icon: 'fa-brands fa-youtube', href: 'https://youtube.com/@artrishmoon' },
+  { name: 'Threads', icon: 'fa-brands fa-threads', href: 'https://www.threads.net/@artrishmoon' },
+];
+
+---
+
+<footer style="background-color: var(--surface); border-top: 1px solid var(--border);">
+  <Container class="py-12">
+    <div class="flex flex-col md:grid md:grid-cols-3 items-center gap-6">
+      <a href="/" aria-label="ArtrishMoon — Inicio" class="md:justify-self-start">
+        <img src="/logo-relleno-color.png" alt="ArtrishMoon" class="h-20 w-auto" />
+      </a>
+
+      <p class="text-sm text-center max-w-sm md:justify-self-center" style="color: var(--text-muted);">
+        Manualidades y carteles de madera hechos a mano por
+        <span class="signature text-xl font-bold">Patricia</span>
+      </p>
+
+      <div class="flex items-center gap-4 md:justify-self-end">
+        {
+          socials.map((social) => (
+            <a
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.name}
+              class="flex items-center justify-center w-10 h-10 rounded-full transition-colors"
+              style="background-color: var(--surface-card); color: var(--accent); border: 1px solid var(--border);"
+            >
+              <i class={social.icon} aria-hidden="true" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</footer>

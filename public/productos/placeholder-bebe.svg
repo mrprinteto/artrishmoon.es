@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="640" height="480">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe4d9"/>
+      <stop offset="100%" stop-color="#ffbea8"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#bg2)"/>
+  <ellipse cx="320" cy="240" rx="190" ry="150" fill="#ffffff" stroke="#f3997c" stroke-width="6"/>
+  <text x="320" y="225" font-family="'Noto Serif', serif" font-size="26" font-weight="700" fill="#2b2230" text-anchor="middle">Bienvenida</text>
+  <text x="320" y="270" font-family="'WindSong', cursive" font-size="34" fill="#d2795c" text-anchor="middle">Luna</text>
+  <circle cx="180" cy="150" r="10" fill="#ac8ec2"/>
+  <circle cx="460" cy="160" r="14" fill="#cdb2e0"/>
+  <text x="320" y="440" font-family="'Inter', sans-serif" font-size="18" fill="#d2795c" text-anchor="middle">Decoración de habitación infantil — ArtrishMoon</text>
+</svg>

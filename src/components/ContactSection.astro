@@ -1,0 +1,23 @@
+---
+import Container from './Container.astro';
+import Section from './Section.astro';
+import ContactForm from './ContactForm.astro';
+import SectionTitle from './SectionTitle.astro';
+---
+
+<Section id="contacto" style="background-color: var(--surface);">
+  <Container class="max-w-3xl">
+    <SectionTitle
+      title="Te escucho"
+      subtitle="¿Tienes una idea en mente? Escríbeme en esta carta y te responderé con una propuesta a medida. También puedes escribirme directamente por redes, siempre estoy atenta."
+    />
+
+    <div class="relative max-w-2xl mx-auto animate-on-scroll" data-delay="1">
+      <div class="washi-tape left" style="top: -14px; left: 24px;"></div>
+      <div class="washi-tape right" style="top: -14px; right: 24px;"></div>
+      <div class="letter-card paper-texture p-7 sm:p-12">
+        <ContactForm />
+      </div>
+    </div>
+  </Container>
+</Section>

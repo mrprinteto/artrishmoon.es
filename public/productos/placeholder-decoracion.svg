@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="640" height="480">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e4d5ee"/>
+      <stop offset="100%" stop-color="#8a6f9e"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#bg3)"/>
+  <rect x="140" y="130" width="360" height="220" rx="24" fill="#ffffff" stroke="#8a6f9e" stroke-width="6"/>
+  <text x="320" y="230" font-family="'Noto Serif', serif" font-size="26" font-weight="700" fill="#2b2230" text-anchor="middle">Bienvenidos a</text>
+  <text x="320" y="280" font-family="'WindSong', cursive" font-size="36" fill="#ac8ec2" text-anchor="middle">nuestra casa</text>
+  <circle cx="200" cy="160" r="10" fill="#f3997c"/>
+  <circle cx="440" cy="160" r="10" fill="#ffbea8"/>
+  <text x="320" y="440" font-family="'Inter', sans-serif" font-size="18" fill="#f5eef7" text-anchor="middle">Decoración a medida para el hogar — ArtrishMoon</text>
+</svg>

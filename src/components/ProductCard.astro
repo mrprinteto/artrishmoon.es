@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  producto: CollectionEntry<'productos'>;
+}
+
+const { producto } = Astro.props;
+const { title, description, image, category } = producto.data;
+
+const categoryLabels: Record<string, string> = {
+  cumpleanos: 'Cumpleaños',
+  bebe: 'Bebés',
+  decoracion: 'Decoración',
+  regalo: 'Regalos',
+};
+---
+
+<article class="card product-card overflow-hidden flex flex-col h-full">
+  <img src={image} alt={title} class="w-full h-56 object-cover" width="640" height="480" loading="lazy" />
+  <div class="p-6 flex flex-col flex-1">
+    <span class="label-tag mb-2" style="color: var(--accent);">{categoryLabels[category] ?? category}</span>
+    <h3 class="text-lg font-semibold mb-2" style="color: var(--text); font-family: 'Noto Serif', serif;">
+      {title}
+    </h3>
+    <p class="text-sm flex-1" style="color: var(--text-muted);">{description}</p>
+    <a
+      href="#contacto"
+      class="mt-4 inline-flex items-center gap-2 text-sm font-semibold"
+      style="color: var(--accent);"
+    >
+      Pedir algo así
+      <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+    </a>
+  </div>
+</article>

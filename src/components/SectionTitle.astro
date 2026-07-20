@@ -1,0 +1,31 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  align?: 'center' | 'left';
+  eyebrowIcon?: string;
+}
+
+const { title, subtitle, align = 'center', eyebrowIcon } = Astro.props;
+const isCenter = align === 'center';
+---
+
+<div
+  class:list={[
+    'animate-on-scroll',
+    isCenter ? 'text-center max-w-2xl mx-auto mb-20' : 'max-w-2xl mb-12',
+  ]}
+>
+  {
+    eyebrowIcon && (
+      <span
+        class="inline-flex items-center justify-center w-10 h-10 rounded-full mb-3"
+        style="background-color: var(--surface); color: var(--accent);"
+      >
+        <i class={eyebrowIcon} aria-hidden="true" />
+      </span>
+    )
+  }
+  <h2 class:list={['title-hand', !isCenter && 'align-left']}>{title}</h2>
+  {subtitle && <p class="mt-4" style="color: var(--text-muted);">{subtitle}</p>}
+</div>

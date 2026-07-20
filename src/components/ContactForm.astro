@@ -1,0 +1,240 @@
+---
+// ContactForm.astro — a handwritten-letter-style form, fetches POST /api/contacto
+---
+
+<form id="contact-form" class="space-y-7" novalidate aria-label="Formulario de contacto">
+  <!-- <p class="font-sans text-base sm:text-lg" style="color: var(--text-muted);">
+    Con cariño, <span id="cf-firma" class="signature text-2xl" style="color: var(--accent); display: none;"></span>
+  </p> -->
+  <!-- "Para Artrish" con el mismo formato. Para en SANS y Artrish en Windsong -->
+  <p class="font-sans text-base sm:text-lg" style="color: var(--text-muted);">
+    Querida <span class="signature text-3xl sm:text-4xl" style="color: var(--accent);">Artrish:</span>
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+    <!-- Nombre -->
+    <div class="space-y-1">
+      <label for="cf-nombre" class="label-mono">Nombre</label>
+      <input
+        type="text"
+        id="cf-nombre"
+        name="nombre"
+        required
+        minlength="2"
+        maxlength="100"
+        autocomplete="name"
+        class="field-underline"
+        placeholder="Tu nombre"
+      />
+      <p id="err-nombre" class="text-xs hidden" style="color:#d2795c;" role="alert" aria-live="polite"></p>
+    </div>
+
+    <!-- Email -->
+    <div class="space-y-1">
+      <label for="cf-email" class="label-mono">Email</label>
+      <input
+        type="email"
+        id="cf-email"
+        name="email"
+        required
+        autocomplete="email"
+        class="field-underline"
+        placeholder="tu@email.com"
+      />
+      <p id="err-email" class="text-xs hidden" style="color:#d2795c;" role="alert" aria-live="polite"></p>
+    </div>
+
+    <!-- Telefono (opcional) -->
+    <div class="space-y-1">
+      <label for="cf-telefono" class="label-mono">Teléfono (opcional)</label>
+      <input
+        type="tel"
+        id="cf-telefono"
+        name="telefono"
+        autocomplete="tel"
+        class="field-underline"
+        placeholder="Tu teléfono"
+      />
+      <p id="err-telefono" class="text-xs hidden" style="color:#d2795c;" role="alert" aria-live="polite"></p>
+    </div>
+
+    <!-- Tipo de encargo -->
+    <div class="space-y-1">
+      <label for="cf-tipo" class="label-mono">Tipo de encargo</label>
+      <select id="cf-tipo" name="tipo" required class="field-underline cursor-pointer" style="appearance: none;">
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option value="cumpleanos">Cartel de cumpleaños</option>
+        <option value="evento">Decoración de evento</option>
+        <option value="regalo">Regalo personalizado</option>
+        <option value="otro">Otro</option>
+      </select>
+      <p id="err-tipo" class="text-xs hidden" style="color:#d2795c;" role="alert" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <!-- Mensaje -->
+  <div class="space-y-1.5">
+    <label for="cf-mensaje" class="label-mono">Cuéntame tu idea</label>
+    <textarea
+      id="cf-mensaje"
+      name="mensaje"
+      required
+      minlength="10"
+      maxlength="2000"
+      rows="5"
+      class="ruled-paper w-full bg-transparent border-none px-1 py-1 resize-y focus:outline-none"
+      style="color: var(--text);"
+      placeholder="Describe tu idea: para quién es, colores, tamaño, fecha en la que lo necesitas… ¡cuanta más información, mejor!"
+    ></textarea>
+    <p id="err-mensaje" class="text-xs hidden" style="color:#d2795c;" role="alert" aria-live="polite"></p>
+  </div>
+
+  <!-- Honeypot anti-spam -->
+  <div class="hidden" aria-hidden="true">
+    <label for="cf-website">Website</label>
+    <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <!-- Status messages -->
+  <div
+    id="msg-success"
+    class="hidden rounded-[var(--radius)] p-4 text-sm"
+    style="background: rgba(34,197,94,0.1); border: 1px dashed rgba(34,197,94,0.4); color: #15803d;"
+    role="alert"
+    aria-live="polite"
+  >
+    <i class="fa-solid fa-check-circle mr-2" aria-hidden="true"></i>
+    ¡Carta enviada! Te responderé en menos de 48 h.
+  </div>
+
+  <div
+    id="msg-error"
+    class="hidden rounded-[var(--radius)] p-4 text-sm"
+    style="background: rgba(210,121,92,0.1); border: 1px dashed rgba(210,121,92,0.4); color: #b0492f;"
+    role="alert"
+    aria-live="polite"
+  >
+    <i class="fa-solid fa-triangle-exclamation mr-2" aria-hidden="true"></i>
+    <span id="msg-error-text">Error al enviar. Inténtalo de nuevo.</span>
+  </div>
+
+  <div class="flex flex-col sm:flex-row items-center sm:justify-between gap-6 pt-2">
+    <p class="font-sans text-base sm:text-lg" style="color: var(--text-muted);">
+      Con cariño, <span id="cf-firma" class="signature text-2xl" style="color: var(--accent); display: none;"></span>
+    </p>
+    <button type="submit" id="cf-submit" class="btn-seal w-full sm:w-auto sm:px-10">
+      <span id="cf-submit-label">Enviar carta</span>
+      <i id="cf-icon-arrow" class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+      <i id="cf-icon-spin" class="fa-solid fa-spinner fa-spin" style="display:none" aria-hidden="true"></i>
+    </button>
+  </div>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('cf-submit') as HTMLButtonElement;
+  const submitLabel = document.getElementById('cf-submit-label') as HTMLSpanElement;
+  const iconArrow = document.getElementById('cf-icon-arrow') as HTMLElement;
+  const iconSpin = document.getElementById('cf-icon-spin') as HTMLElement;
+  const nombreInput = document.getElementById('cf-nombre') as HTMLInputElement;
+  const firma = document.getElementById('cf-firma') as HTMLSpanElement;
+
+  function updateFirma() {
+    const value = nombreInput.value.trim();
+    firma.textContent = value;
+    firma.style.display = value ? 'inline' : 'none';
+  }
+  nombreInput?.addEventListener('input', updateFirma);
+  updateFirma();
+  const msgSuccess = document.getElementById('msg-success') as HTMLElement;
+  const msgError = document.getElementById('msg-error') as HTMLElement;
+  const msgErrorText = document.getElementById('msg-error-text') as HTMLSpanElement;
+
+  const FIELDS = ['nombre', 'email', 'tipo', 'telefono', 'mensaje'] as const;
+  const COOLDOWN_MS = 30_000;
+  let lastSubmit = 0;
+
+  function setLoading(loading: boolean) {
+    submitBtn.disabled = loading;
+    submitLabel.textContent = loading ? 'Enviando…' : 'Enviar carta';
+    iconArrow.style.display = loading ? 'none' : '';
+    iconSpin.style.display = loading ? '' : 'none';
+  }
+
+  function clearErrors() {
+    FIELDS.forEach((f) => {
+      const errEl = document.getElementById(`err-${f}`);
+      const inputEl = document.getElementById(`cf-${f}`);
+      errEl?.classList.add('hidden');
+      inputEl?.classList.remove('error');
+    });
+    msgSuccess.classList.add('hidden');
+    msgError.classList.add('hidden');
+  }
+
+  function showFieldErrors(errors: Record<string, string[]>) {
+    Object.entries(errors).forEach(([field, messages]) => {
+      const errEl = document.getElementById(`err-${field}`);
+      const inputEl = document.getElementById(`cf-${field}`);
+      if (errEl && messages?.length) {
+        errEl.textContent = messages[0];
+        errEl.classList.remove('hidden');
+        inputEl?.classList.add('error');
+      }
+    });
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const now = Date.now();
+    if (now - lastSubmit < COOLDOWN_MS) {
+      msgErrorText.textContent = 'Espera unos segundos antes de volver a enviar.';
+      msgError.classList.remove('hidden');
+      return;
+    }
+
+    // Honeypot: if filled, silently pretend success (bot)
+    const honeypot = (form.elements.namedItem('website') as HTMLInputElement)?.value;
+    if (honeypot) {
+      msgSuccess.classList.remove('hidden');
+      form.reset();
+      return;
+    }
+
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/contacto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (res.status === 422 && data.errors) {
+        showFieldErrors(data.errors);
+        return;
+      }
+
+      if (!res.ok || !data.ok) {
+        msgErrorText.textContent = data.error ?? 'Error al enviar. Inténtalo de nuevo.';
+        msgError.classList.remove('hidden');
+        return;
+      }
+
+      lastSubmit = now;
+      msgSuccess.classList.remove('hidden');
+      form.reset();
+    } catch {
+      msgErrorText.textContent = 'No se pudo conectar. Comprueba tu conexión e inténtalo de nuevo.';
+      msgError.classList.remove('hidden');
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>

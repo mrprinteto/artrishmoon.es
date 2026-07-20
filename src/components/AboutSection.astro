@@ -1,0 +1,61 @@
+---
+import Container from './Container.astro';
+import Section from './Section.astro';
+import SectionTitle from './SectionTitle.astro';
+import Sparkles from './Sparkles.astro';
+
+const highlights = [
+  { icon: 'fa-solid fa-heart', text: 'Diseños únicos, pensados para cada persona' },
+  { icon: 'fa-solid fa-tree', text: 'Madera y materiales cuidadosamente seleccionados' },
+  { icon: 'fa-solid fa-wand-magic-sparkles', text: 'Un toque mágico y artesanal en cada pieza' },
+];
+---
+
+<Section id="sobre-mi">
+  <Sparkles />
+  <Container>
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="animate-on-scroll order-2 md:order-1 relative">
+        <div class="washi-tape right" style="top: -12px; right: calc(50% - 150px);"></div>
+        <div class="card p-3 max-w-md mx-auto -rotate-2 relative" style="background-color: var(--surface-card);">
+          <img
+            src="/productos/product-2.jpg"
+            alt="Patricia trabajando en un regalo personalizado de ArtrishMoon"
+            class="rounded-[var(--radius-sm)] w-full h-auto"
+            width="640"
+            height="480"
+          />
+        </div>
+      </div>
+
+      <div class="animate-on-scroll order-1 md:order-2">
+        <SectionTitle title="Sobre mí" align="left" />
+        <p class="mb-4" style="color: var(--text-muted);">
+          Soy Patricia Nuñez, y empecé ArtrishMoon como una forma de convertir ideas pequeñas en
+          recuerdos grandes: un cartel para el primer cumpleaños, una placa para la puerta de una
+          habitación infantil, un detalle que no se encuentra en ninguna tienda.
+        </p>
+        <p class="mb-8" style="color: var(--text-muted);">
+          Cada encargo se diseña, corta y pinta a mano, cuidando cada detalle como si fuera para mi
+          propia familia.
+        </p>
+
+        <ul class="space-y-4">
+          {
+            highlights.map((item) => (
+              <li class="flex items-center gap-3">
+                <span
+                  class="flex items-center justify-center w-9 h-9 rounded-full flex-shrink-0"
+                  style="background-color: var(--surface); color: var(--accent);"
+                >
+                  <i class={item.icon} aria-hidden="true" />
+                </span>
+                <span style="color: var(--text);">{item.text}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </Container>
+</Section>

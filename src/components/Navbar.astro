@@ -1,0 +1,104 @@
+---
+const navLinks = [
+  { href: '#sobre-mi', label: 'Sobre mí' },
+  { href: '#productos', label: 'Productos' },
+  { href: '#proceso', label: 'Cómo trabajo' },
+  { href: '#marcas', label: 'Marcas' },
+  { href: '#contacto', label: 'Contacto' },
+];
+---
+
+<header id="navbar" class="fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo -->
+      <a href="/" class="flex-shrink-0 py-4" aria-label="ArtrishMoon — Inicio">
+        <img
+          src="/logo-relleno-color.png"
+          alt="ArtrishMoon"
+          class="h-12 sm:h-20 w-auto"
+        />
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex items-center gap-8" aria-label="Navegación principal">
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              class="nav-link text-sm font-medium"
+              style="color: var(--text-muted);"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <!-- CTA + hamburger -->
+      <div class="flex items-center gap-3">
+        <a href="#contacto" class="btn-primary hidden md:inline-flex text-sm py-2 px-4">
+          Cuéntame tu idea
+        </a>
+
+        <button
+          id="menu-toggle"
+          class="md:hidden p-2 rounded-[var(--radius-sm)] transition-colors"
+          style="color: var(--text);"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Abrir menú"
+        >
+          <i id="menu-icon" class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="md:hidden hidden"
+    role="navigation"
+    aria-label="Menú móvil"
+    style="background-color: rgba(250, 246, 249, 0.98); border-top: 1px solid var(--border);"
+  >
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-5 flex flex-col gap-1">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="mobile-nav-link py-3 font-medium"
+            style="color: var(--text-muted);"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a href="#contacto" class="btn-primary mt-3 justify-center"> Cuéntame tu idea </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuIcon = document.getElementById('menu-icon');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  menuToggle?.addEventListener('click', () => {
+    const isOpen = !mobileMenu?.classList.contains('hidden');
+    mobileMenu?.classList.toggle('hidden');
+    menuToggle.setAttribute('aria-expanded', String(!isOpen));
+    menuIcon?.classList.toggle('fa-bars', isOpen);
+    menuIcon?.classList.toggle('fa-xmark', !isOpen);
+  });
+
+  document.querySelectorAll('#mobile-menu a').forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden');
+      menuToggle?.setAttribute('aria-expanded', 'false');
+      menuIcon?.classList.add('fa-bars');
+      menuIcon?.classList.remove('fa-xmark');
+    });
+  });
+</script>

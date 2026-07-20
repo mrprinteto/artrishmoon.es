@@ -1,0 +1,124 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = 'ArtrishMoon — Manualidades y carteles de madera hechos a mano',
+  description = 'ArtrishMoon es la marca personal de Patricia Nuñez: carteles de madera para cumpleaños, decoración infantil y regalos personalizados, hechos a mano con cariño.',
+  ogImage = 'https://www.artrishmoon.es/logo-relleno-color.png',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'ArtrishMoon',
+  url: 'https://www.artrishmoon.es',
+  logo: 'https://www.artrishmoon.es/logo-relleno-color.png',
+  description:
+    'Marca personal de Patricia Nuñez: carteles de madera, decoración y regalos hechos a mano.',
+  founder: {
+    '@type': 'Person',
+    name: 'Patricia Nuñez',
+  },
+  sameAs: [
+    'https://instagram.com/artrishmoon',
+    'https://tiktok.com/@artrishmoon',
+    'https://youtube.com/@artrishmoon',
+    'https://www.threads.net/@artrishmoon',
+  ],
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Patricia Nuñez — ArtrishMoon" />
+    <meta
+      name="keywords"
+      content="carteles de madera, regalos personalizados, decoración infantil, manualidades hechas a mano, cumpleaños, ArtrishMoon"
+    />
+    <meta name="theme-color" content="#ac8ec2" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="ArtrishMoon" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Icons / manifest -->
+    <link rel="icon" type="image/png" href="/isologo-relleno-color.png" />
+    <link rel="apple-touch-icon" href="/isologo-relleno-color.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=WindSong:wght@400;500&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome (free CDN, no account/kit required) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      // Navbar scroll state
+      const navbar = document.getElementById('navbar');
+      const onScroll = () => {
+        if (!navbar) return;
+        navbar.classList.toggle('scrolled', window.scrollY > 12);
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Scroll-in animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      document.querySelectorAll('.animate-on-scroll').forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

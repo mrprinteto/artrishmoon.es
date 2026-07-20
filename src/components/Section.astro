@@ -1,0 +1,12 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+  style?: string;
+}
+const { id, class: className, style } = Astro.props;
+---
+
+<section {id} {style} class:list={['relative overflow-hidden py-16 md:py-24', className]}>
+  <slot />
+</section>

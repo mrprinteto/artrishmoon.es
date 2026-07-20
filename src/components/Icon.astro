@@ -1,0 +1,20 @@
+---
+/**
+ * Icon.astro — thin wrapper over Font Awesome Kit CDN icons.
+ * Requires PUBLIC_FA_KIT_URL to be set so the FA Kit script loads.
+ *
+ * Usage:
+ *   <Icon name="fa-solid fa-gift" class="text-xl text-amethyst" />
+ *   <Icon name="fa-brands fa-instagram" />
+ */
+interface Props {
+  name: string;
+  class?: string;
+  ariaHidden?: boolean;
+  title?: string;
+}
+
+const { name, class: className, ariaHidden = true, title } = Astro.props;
+---
+
+<i class:list={[name, className]} aria-hidden={ariaHidden ? 'true' : undefined} title={title}></i>
