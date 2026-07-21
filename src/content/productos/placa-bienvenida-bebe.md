@@ -1,7 +1,7 @@
 ---
 title: "Natalicio personalizado"
-description: "Decoración a medida para la habitación infantil, con el nombre y la fecha de nacimiento pintados con delicadeza."
+description: "Puedes elegir entre varias tematicas disponibles o un diseño nuevo totalmente personalizado para ti."
 category: "bebe"
-image: "/productos/product-5.jpg"
+image: "/productos/teresa.jpg"
 featured: true
 ---

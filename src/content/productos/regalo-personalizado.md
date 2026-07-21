@@ -1,7 +1,7 @@
 ---
-title: "Regalo personalizado hecho a mano"
-description: "Ideal para sorprender en cualquier ocasión: cumpleaños, aniversarios o simplemente para decir 'pensé en ti'."
+title: "Cumplemeses"
+description: "Este pack incluye 13 placas, una por cada mes del año más una principal totalmente personalizable con el nombre del bebé."
 category: "regalo"
-image: "/productos/product-6.jpg"
+image: "/productos/cumplemeses.jpg"
 featured: false
 ---
