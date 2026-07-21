@@ -6,19 +6,18 @@ import Sparkles from './Sparkles.astro';
 
 // BrandsCarousel — auto-scrolling marquee of partner/collaborator brand logos
 const brands = [
-  { name: 'Elegoo', src: 'https://assets.mrprinteto.com/brands/elegoo/elegoo-logo.avif' },
-  { name: 'Creality', src: 'https://assets.mrprinteto.com/brands/creality/creality-logo.png' },
-  { name: 'Snapmaker', src: 'https://assets.mrprinteto.com/brands/snapmaker/snapmaker-logo.webp' },
-  { name: 'Sakata 3D', src: 'https://assets.mrprinteto.com/brands/sakata3d/logo.jpg' },
-  {
-    name: 'Creality Falcon',
-    src: 'https://assets.mrprinteto.com/brands/creality-falcon/creality-falcon-logo.webp',
-  },
-  { name: 'LaserPecker', src: 'https://assets.mrprinteto.com/brands/laserpecker/laserpecker-logo.webp' },
-  { name: 'WeCreat', src: 'https://assets.mrprinteto.com/brands/wecreat/wecreat-logo.avif' },
-  { name: 'Anycubic', src: 'https://assets.mrprinteto.com/brands/anycubic/anycubic-logo.webp' },
-  { name: 'Bambu Lab', src: 'https://assets.mrprinteto.com/brands/bambulab/bambulab-logo.webp' },
-  { name: 'FlashForge', src: 'https://assets.mrprinteto.com/brands/flashforge/flashforge-logo.avif' },
+  { name: 'Natalicio Gabriel', src: '/productos/gabriel.jpg' },
+  { name: 'Natalicio Teresa', src: '/productos/teresa.jpg' },
+  { name: 'Natalicio Adrian', src: '/productos/adrian_nata.jpg' },
+  { name: 'Natalicio Ana Claudia', src: '/productos/ana_claudia.jpg' },
+  { name: 'Natalicio Julia', src: '/productos/product-1.jpg' },
+  { name: 'Natalicio Oliver', src: '/productos/oliver_nata.jpg' },
+  { name: 'Natalicio Martín', src: '/productos/martin.png' },
+  { name: 'Natalicio Pedro', src: '/productos/pedro.jpg' },
+  { name: 'Cartel Adrian', src: '/productos/adrian.jpg' },
+  { name: 'Cartel Ana Claudia', src: '/productos/ratas.jpg' },
+  { name: 'Cartel Oliver', src: '/productos/oliver_cartel.jpg' },
+  { name: 'Casita Ratoncito Perez', src: '/productos/raton_perez.jpg' },
 ];
 
 // Duplicate list for a seamless infinite loop
@@ -29,7 +28,7 @@ const track = [...brands, ...brands];
   <Sparkles />
   <Container>
     <SectionTitle
-      title="Gracias por confiar en mí"
+      title="Gracias por confiar en mí:"
       subtitle=""
     />
   </Container>
@@ -73,13 +72,14 @@ const track = [...brands, ...brands];
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 2.5rem;
+    height: 14rem;
   }
 
   .marquee-item img {
     height: 100%;
     width: auto;
-    max-width: 140px;
+    max-width: 420px;
+    min-width: 240px;
     object-fit: contain;
     filter: grayscale(1) opacity(0.6);
     transition: filter 0.25s ease;
