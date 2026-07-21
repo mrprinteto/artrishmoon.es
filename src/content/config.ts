@@ -6,7 +6,7 @@ const productos = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    category: z.enum(['cumpleanos', 'bebe', 'decoracion', 'regalo']),
+    category: z.enum(['bebe', 'decoracion', 'regalo']),
     image: z.string(),
     featured: z.boolean().default(false),
   }),

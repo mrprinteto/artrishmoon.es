@@ -33,7 +33,7 @@ const contactSchema = z.object({
     .min(2, 'El nombre debe tener al menos 2 caracteres')
     .max(100, 'El nombre es demasiado largo'),
   email: z.string().email('Introduce un email válido'),
-  tipo: z.enum(['cumpleanos', 'evento', 'regalo', 'otro'], {
+  tipo: z.enum(['evento', 'regalo', 'otro'], {
     errorMap: () => ({ message: 'Selecciona un tipo de encargo válido' }),
   }),
   telefono: z
@@ -50,7 +50,7 @@ const contactSchema = z.object({
 });
 
 const TIPO_LABELS: Record<string, string> = {
-  cumpleanos: 'Cartel de cumpleaños',
+  decoracion: 'Decoración',
   evento: 'Decoración de evento',
   regalo: 'Regalo personalizado',
   otro: 'Otro',
