@@ -1,0 +1,177 @@
+---
+import Container from './Container.astro';
+import Section from './Section.astro';
+import SectionTitle from './SectionTitle.astro';
+import Sparkles from './Sparkles.astro';
+
+const products = [
+  { name: 'Natalicio Gabriel', src: '/productos/gabriel.jpg' },
+  { name: 'Natalicio Teresa', src: '/productos/teresa.jpg' },
+  { name: 'Natalicio Adrian', src: '/productos/adrian_nata.jpg' },
+  { name: 'Natalicio Ana Claudia', src: '/productos/ana_claudia.jpg' },
+  { name: 'Natalicio Julia', src: '/productos/product-1.jpg' },
+  { name: 'Natalicio Oliver', src: '/productos/oliver_nata.jpg' },
+  { name: 'Natalicio Martín', src: '/productos/martin.png' },
+  { name: 'Natalicio Pedro', src: '/productos/pedro.jpg' },
+  { name: 'Cartel Adrian', src: '/productos/adrian.jpg' },
+  { name: 'Cartel Ana Claudia', src: '/productos/ratas.jpg' },
+  { name: 'Cartel Oliver', src: '/productos/oliver_cartel.jpg' },
+  { name: 'Casita Ratoncito Perez', src: '/productos/raton_perez.jpg' },
+];
+
+// Row 2 uses reversed order so both rows feel distinct
+const productsReversed = [...products].reverse();
+
+const track1 = [...products, ...products];
+const track2 = [...productsReversed, ...productsReversed];
+
+// Rotation class cycles through 6 variants (applied by index mod 6)
+const rotClass = (i: number) => `r${(i % 6) + 1}`;
+---
+
+<Section id="clientes" style="overflow-x: clip; overflow-y: visible;">
+  <Sparkles />
+  <Container>
+    <SectionTitle
+      title="Gracias por confiar en mí:"
+      subtitle=""
+    />
+  </Container>
+
+  <div class="gallery-wrapper animate-on-scroll">
+    <div class="marquee-outer">
+      <div class="marquee-track track-forward">
+        {track1.map((item, i) => (
+          <div class={`polaroid ${rotClass(i)}`} title={item.name}>
+            <div class="polaroid-img-wrap">
+              <img src={item.src} alt={item.name} loading="lazy" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="marquee-outer">
+      <div class="marquee-track track-reverse">
+        {track2.map((item, i) => (
+          <div class={`polaroid ${rotClass(i + 2)}`} title={item.name}>
+            <div class="polaroid-img-wrap">
+              <img src={item.src} alt={item.name} loading="lazy" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .gallery-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem 0 2.5rem;
+    position: relative;
+  }
+
+  /* Fade lateral como overlay, sin recortar el overflow vertical */
+  .gallery-wrapper::before,
+  .gallery-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 10%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .gallery-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg, #fff), transparent);
+  }
+
+  .gallery-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg, #fff), transparent);
+  }
+
+  .marquee-outer {
+    overflow: visible;
+    padding-block: 1rem;
+  }
+
+  .marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    width: max-content;
+  }
+
+  .track-forward  { animation: scroll-fwd 70s linear infinite; }
+  .track-reverse  { animation: scroll-rev 80s linear infinite; }
+
+/* ── Polaroid card ── */
+  .polaroid {
+    flex-shrink: 0;
+    background: #ffffff;
+    padding: 0.55rem 0.55rem 2.4rem;
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.09),
+      0 1px 2px rgba(0, 0, 0, 0.05);
+    transition:
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.35s ease;
+    cursor: pointer;
+    position: relative;
+    will-change: transform;
+  }
+
+  /* Six rotation variants for natural scatter */
+  .r1 { transform: rotate(-2.6deg); }
+  .r2 { transform: rotate( 1.9deg); }
+  .r3 { transform: rotate(-1.1deg); }
+  .r4 { transform: rotate( 2.3deg); }
+  .r5 { transform: rotate(-0.7deg); }
+  .r6 { transform: rotate( 1.3deg); }
+
+  .polaroid:hover {
+    transform: rotate(0deg) scale(1.38) translateY(-10px) !important;
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.15),
+      0 6px 16px rgba(0, 0, 0, 0.08);
+    z-index: 20;
+  }
+
+  /* ── Image inside polaroid ── */
+  .polaroid-img-wrap {
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .polaroid img {
+    display: block;
+    height: 13rem;
+    width: auto;
+    max-width: 260px;
+    min-width: 160px;
+    object-fit: cover;
+    transition: filter 0.35s ease, transform 0.4s ease;
+    filter: saturate(0.9) brightness(0.96);
+  }
+
+  .polaroid:hover img {
+    filter: saturate(1.12) brightness(1.03);
+  }
+
+  /* ── Keyframes ── */
+  @keyframes scroll-fwd {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @keyframes scroll-rev {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+</style>
