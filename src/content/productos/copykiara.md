@@ -1,7 +1,7 @@
 ---
-title: "Figura Personalizada"
-description: "Figura impresa en 3D completamente personalizada. Ideal como regalo único e irrepetible para cualquier ocasión especial."
-category: "regalo"
-image: "/productos/copykiara.png"
+title: "Decorazión Navideña"
+description: "Decoración navideña personalizada."
+category: "decoracion"
+image: "/productos/product-6.jpg"
 featured: false
 ---
