@@ -8,6 +8,7 @@ const productos = defineCollection({
     description: z.string(),
     category: z.enum(['bebe', 'decoracion', 'regalo']),
     image: z.string(),
+    images: z.array(z.string()).optional(),
     featured: z.boolean().default(false),
   }),
 });

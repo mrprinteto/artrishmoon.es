@@ -2,6 +2,9 @@
 title: "Natalicio personalizado"
 description: "Puedes elegir entre varias tematicas disponibles o un diseño nuevo totalmente personalizado para ti."
 category: "decoracion"
-image: "/productos/natalicio_oli.jpg"
+image: "/productos/teresa.jpg"
+images:
+  - "/productos/teresa.jpg"
+  - "/productos/gabriel.jpg"
 featured: true
 ---

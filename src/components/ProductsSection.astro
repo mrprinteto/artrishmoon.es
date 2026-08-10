@@ -6,9 +6,28 @@ import ProductCard from './ProductCard.astro';
 import SectionTitle from './SectionTitle.astro';
 import SectionDivider from './SectionDivider.astro';
 
-const productos = (await getCollection('productos')).sort(
-  (a, b) => Number(b.data.featured) - Number(a.data.featured)
-);
+const productOrder: Record<string, number> = {
+  'Nombre personalizado': 0,
+  'Natalicio personalizado': 1,
+  'Cartel infantil': 2,
+  'Cumplemeses': 3,
+  'Decorazión Navideña': 4,
+  'Marcapáginas en 3D': 5,
+  'Decoración en 3D': 6,
+  'Posavasos Monstera': 7,
+};
+
+const productos = (await getCollection('productos'))
+  .map((producto) => ({
+    ...producto,
+    priority: producto.data.featured ? 0 : 1,
+    customOrder: productOrder[producto.data.title] ?? Number.MAX_SAFE_INTEGER,
+  }))
+  .sort((a, b) => {
+    if (a.priority !== b.priority) return a.priority - b.priority;
+    if (a.customOrder !== b.customOrder) return a.customOrder - b.customOrder;
+    return a.data.title.localeCompare(b.data.title);
+  });
 
 const rotations = ['-rotate-1', 'rotate-1', '-rotate-1', 'rotate-2'];
 ---

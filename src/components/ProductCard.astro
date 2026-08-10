@@ -6,17 +6,44 @@ interface Props {
 }
 
 const { producto } = Astro.props;
-const { title, description, image, category } = producto.data;
+const { title, description, image, images, category } = producto.data;
 
 const categoryLabels: Record<string, string> = {
   bebe: 'Bebés',
   decoracion: 'Decoración',
   regalo: 'Regalos',
 };
+
+const gallery = Array.isArray(images) && images.length > 0 ? images : [image];
 ---
 
 <article class="card product-card overflow-hidden flex flex-col h-full">
-  <img src={image} alt={title} class="w-full h-56 object-cover" width="640" height="480" loading="lazy" />
+  <div class="product-image-carousel">
+    <div class="carousel-viewport">
+      {gallery.map((src, index) => (
+        <img
+          src={src}
+          alt={`${title} ${index + 1}`}
+          class:list={['carousel-image', { 'is-active': index === 0 }]}
+          width="640"
+          height="480"
+          loading="lazy"
+        />
+      ))}
+
+      {gallery.length > 1 && (
+        <div class="carousel-side-controls" aria-label="Control del carrusel de imágenes">
+          <button type="button" class="carousel-side-button prev" aria-label="Ver imagen anterior">
+            <span class="arrow-icon">‹</span>
+          </button>
+          <button type="button" class="carousel-side-button next" aria-label="Ver siguiente imagen">
+            <span class="arrow-icon">›</span>
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+
   <div class="p-6 flex flex-col flex-1">
     <span class="label-tag mb-2" style="color: var(--accent);">{categoryLabels[category] ?? category}</span>
     <h3 class="text-lg font-semibold mb-2" style="color: var(--text); font-family: 'Noto Serif', serif;">
@@ -33,3 +60,106 @@ const categoryLabels: Record<string, string> = {
     </a>
   </div>
 </article>
+
+<script>
+  const carousels = document.querySelectorAll('.product-image-carousel');
+
+  carousels.forEach((carousel) => {
+    const images = Array.from(carousel.querySelectorAll('.carousel-image'));
+    const prevButton = carousel.querySelector('.carousel-side-button.prev');
+    const nextButton = carousel.querySelector('.carousel-side-button.next');
+
+    if (images.length <= 1) return;
+
+    let activeIndex = 0;
+
+    const updateCarousel = () => {
+      images.forEach((image, index) => {
+        image.classList.toggle('is-active', index === activeIndex);
+      });
+    };
+
+    const showSlide = (index: number) => {
+      activeIndex = (index + images.length) % images.length;
+      updateCarousel();
+    };
+
+    prevButton?.addEventListener('click', () => showSlide(activeIndex - 1));
+    nextButton?.addEventListener('click', () => showSlide(activeIndex + 1));
+
+    window.setInterval(() => {
+      showSlide(activeIndex + 1);
+    }, 4500);
+  });
+</script>
+
+<style>
+  .product-image-carousel {
+    position: relative;
+    background: var(--surface);
+  }
+
+  .carousel-viewport {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.04));
+  }
+
+  .carousel-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.03);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .carousel-image.is-active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .carousel-side-controls {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.75rem;
+    pointer-events: none;
+  }
+
+  .carousel-side-button {
+    pointer-events: auto;
+    border: 2px solid rgba(172, 142, 194, 0.25);
+    border-radius: 999px;
+    width: 2.65rem;
+    height: 2.65rem;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--accent);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+    cursor: pointer;
+    line-height: 1;
+    font-weight: 700;
+    backdrop-filter: blur(6px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    padding: 0;
+  }
+
+  .carousel-side-button:hover {
+    transform: scale(1.06);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    background: #ffffff;
+  }
+
+  .arrow-icon {
+    font-size: 1.6rem;
+    display: block;
+    transform: translateY(-1px);
+  }
+</style>

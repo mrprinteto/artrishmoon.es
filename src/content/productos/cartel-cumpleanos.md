@@ -1,6 +1,6 @@
 ---
 title: "Nombre personalizado"
-description: "Se compone de la inicial impresa en 3D y del nombre cortado con láser en madera."
+description: "Se compone de la inicial y el nombre impreso en 3D en diferentes colores."
 category: "decoracion"
 image: "/productos/letra_oli.jpg"
 featured: true
