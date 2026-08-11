@@ -6,5 +6,10 @@ image: "/productos/teresa.jpg"
 images:
   - "/productos/teresa.jpg"
   - "/productos/gabriel.jpg"
+  - "/productos/adrian_nata.jpg"
+  - "/productos/ana_claudia.jpg"
+  - "/productos/martin.png"
+  - "/productos/pedro.jpg"
+  - "/productos/product-1.jpg"
 featured: true
 ---
