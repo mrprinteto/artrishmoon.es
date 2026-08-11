@@ -18,7 +18,7 @@ const gallery = Array.isArray(images) && images.length > 0 ? images : [image];
 ---
 
 <article class="card product-card overflow-hidden flex flex-col h-full">
-  <div class="product-image-carousel">
+  <div class="product-image-carousel" data-product-title={title}>
     <div class="carousel-viewport">
       {gallery.map((src, index) => (
         <img
@@ -30,6 +30,38 @@ const gallery = Array.isArray(images) && images.length > 0 ? images : [image];
           loading="lazy"
         />
       ))}
+
+      <div class="modal-backdrop" hidden>
+        <div class="modal-shell" role="dialog" aria-modal="true" aria-label={`Galería de ${title}`} tabindex="-1">
+          <button type="button" class="modal-close-button" aria-label="Cerrar galería">×</button>
+          <div class="modal-content">
+            <div class="modal-image-frame">
+              <img src={gallery[0]} alt={`Vista ampliada de ${title}`} class="modal-display-image" />
+            </div>
+
+            <div class="modal-thumbnails" aria-label="Miniaturas de la galería">
+              {gallery.map((src, thumbIndex) => (
+                <button
+                  type="button"
+                  class:list={['modal-thumb-button', { 'is-active': thumbIndex === 0 }]}
+                  data-index={String(thumbIndex)}
+                  style={`background-image: url(${src});`}
+                  aria-label={`Ver imagen ${thumbIndex + 1}`}
+                ></button>
+              ))}
+            </div>
+
+            <div class="modal-side-controls" aria-label="Control del carrusel de galería grande">
+              <button type="button" class="modal-side-button prev" aria-label="Ver imagen anterior">
+                <span class="arrow-icon">‹</span>
+              </button>
+              <button type="button" class="modal-side-button next" aria-label="Ver siguiente imagen">
+                <span class="arrow-icon">›</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {gallery.length > 1 && (
         <div class="carousel-side-controls" aria-label="Control del carrusel de imágenes">
@@ -62,16 +94,27 @@ const gallery = Array.isArray(images) && images.length > 0 ? images : [image];
 </article>
 
 <script>
-  const carousels = document.querySelectorAll('.product-image-carousel');
+  const carousels = document.querySelectorAll<HTMLDivElement>('.product-image-carousel');
 
   carousels.forEach((carousel) => {
-    const images = Array.from(carousel.querySelectorAll('.carousel-image'));
-    const prevButton = carousel.querySelector('.carousel-side-button.prev');
-    const nextButton = carousel.querySelector('.carousel-side-button.next');
+    const root = carousel.closest<HTMLDivElement>('.product-card');
+    if (!root) return;
 
-    if (images.length <= 1) return;
+    const images = Array.from<HTMLImageElement>(carousel.querySelectorAll<HTMLImageElement>('.carousel-image'));
+    const prevButton = carousel.querySelector<HTMLButtonElement>('.carousel-side-button.prev');
+    const nextButton = carousel.querySelector<HTMLButtonElement>('.carousel-side-button.next');
+    const modalBackdrop = root.querySelector<HTMLDivElement>('.modal-backdrop');
+    const modalImage = root.querySelector<HTMLImageElement>('.modal-display-image');
+    const modalPrev = root.querySelector<HTMLButtonElement>('.modal-side-button.prev');
+    const modalNext = root.querySelector<HTMLButtonElement>('.modal-side-button.next');
+    const modalClose = root.querySelector<HTMLButtonElement>('.modal-close-button');
+    const modalThumbButtons = Array.from<HTMLButtonElement>(root.querySelectorAll<HTMLButtonElement>('.modal-thumb-button'));
+
+    if (images.length === 0 || !modalBackdrop || !modalImage) return;
 
     let activeIndex = 0;
+    let modalIndex = 0;
+    let modalIntervalId: number | undefined;
 
     const updateCarousel = () => {
       images.forEach((image, index) => {
@@ -79,17 +122,78 @@ const gallery = Array.isArray(images) && images.length > 0 ? images : [image];
       });
     };
 
+    const productTitle = root.dataset.productTitle || '';
+
+    const updateModal = () => {
+      modalImage.src = images[modalIndex]?.src || '';
+      modalImage.alt = `Vista ampliada de ${productTitle} ${modalIndex + 1}`;
+      modalThumbButtons.forEach((button, index) => {
+        button.classList.toggle('is-active', index === modalIndex);
+      });
+    };
+
+    const ensureModalInBody = () => {
+      if (modalBackdrop.parentElement !== document.body) {
+        document.body.appendChild(modalBackdrop);
+      }
+    };
+
     const showSlide = (index: number) => {
       activeIndex = (index + images.length) % images.length;
       updateCarousel();
     };
 
+    const showModalSlide = (index: number) => {
+      modalIndex = (index + images.length) % images.length;
+      updateModal();
+    };
+
+    const openModal = (index: number) => {
+      modalIndex = (index + images.length) % images.length;
+      ensureModalInBody();
+      modalBackdrop.hidden = false;
+      modalBackdrop.classList.add('is-open');
+      modalBackdrop.setAttribute('tabindex', '-1');
+      modalBackdrop.focus();
+      updateModal();
+      if (modalIntervalId) window.clearInterval(modalIntervalId);
+      modalIntervalId = window.setInterval(() => showModalSlide(modalIndex + 1), 5000);
+    };
+
+    const closeModal = () => {
+      modalBackdrop.hidden = true;
+      modalBackdrop.classList.remove('is-open');
+      modalBackdrop.removeAttribute('tabindex');
+      if (modalIntervalId) {
+        window.clearInterval(modalIntervalId);
+        modalIntervalId = undefined;
+      }
+    };
+
+    images.forEach((image, index) => {
+      image.style.cursor = 'pointer';
+      image.addEventListener('click', () => openModal(index));
+    });
+
     prevButton?.addEventListener('click', () => showSlide(activeIndex - 1));
     nextButton?.addEventListener('click', () => showSlide(activeIndex + 1));
 
-    window.setInterval(() => {
-      showSlide(activeIndex + 1);
-    }, 4500);
+    modalPrev?.addEventListener('click', () => showModalSlide(modalIndex - 1));
+    modalNext?.addEventListener('click', () => showModalSlide(modalIndex + 1));
+    modalClose?.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', (event) => {
+      if (event.target === modalBackdrop) closeModal();
+    });
+
+    modalThumbButtons.forEach((button, index) => {
+      button.addEventListener('click', () => showModalSlide(index));
+    });
+
+    if (images.length > 1) {
+      window.setInterval(() => {
+        showSlide(activeIndex + 1);
+      }, 4500);
+    }
   });
 </script>
 
@@ -115,6 +219,7 @@ const gallery = Array.isArray(images) && images.length > 0 ? images : [image];
     opacity: 0;
     transform: scale(1.03);
     transition: opacity 0.35s ease, transform 0.35s ease;
+    cursor: pointer;
   }
 
   .carousel-image.is-active {
@@ -161,5 +266,152 @@ const gallery = Array.isArray(images) && images.length > 0 ? images : [image];
     font-size: 1.6rem;
     display: block;
     transform: translateY(-1px);
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.72);
+    z-index: 9999;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .modal-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal-shell {
+    width: min(100%, 650px);
+    max-width: 650px;
+    max-height: min(100%, 88vh);
+    background: rgba(250, 250, 250, 0.35);
+    backdrop-filter: blur(18px);
+    border-radius: 1.5rem;
+    box-shadow: 0 26px 80px rgba(0, 0, 0, 0.24);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .modal-close-button {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--text);
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+    display: grid;
+    gap: 1rem;
+    min-height: 24rem;
+  }
+
+  .modal-image-frame {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #f5f0fc;
+    border-radius: 1rem;
+  }
+
+  .modal-display-image {
+    max-width: 100%;
+    max-height: calc(100vh - 18rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+  }
+
+  .modal-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-thumb-button {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .modal-thumb-button.is-active {
+    border-color: var(--accent);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+    transform: translateY(-2px);
+  }
+
+  .modal-side-controls {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    pointer-events: none;
+  }
+
+  .modal-side-button {
+    pointer-events: auto;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    border: none;
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--accent);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .modal-side-button:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 640px) {
+    .modal-shell {
+      width: calc(100% - 2rem);
+      max-height: 100%;
+      border-radius: 1rem;
+    }
+
+    .modal-content {
+      padding: 1rem;
+    }
+
+    .modal-thumb-button {
+      width: 4rem;
+      height: 4rem;
+    }
   }
 </style>
