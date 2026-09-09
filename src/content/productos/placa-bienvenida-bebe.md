@@ -11,5 +11,6 @@ images:
   - "/productos/martin.png"
   - "/productos/pedro.jpg"
   - "/productos/product-1.jpg"
+  - "/productos/vera_nata.jpg"
 featured: true
 ---

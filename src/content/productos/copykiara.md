@@ -9,5 +9,7 @@ images:
   - "/productos/huellas.jpg"
   - "/productos/bola_patri.jpg"
   - "/productos/maca.png"
+  - "/productos/casca.jpg"
+  - "/productos/bolitas.jpg"
 featured: false
 ---
