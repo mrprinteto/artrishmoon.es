@@ -6,5 +6,6 @@ image: "/productos/meses_oli.jpg"
 images:
   - "/productos/meses_oli.jpg"
   - "/productos/cumplemeses.jpg"
+  - "/productos/daniela.jpg"
 featured: false
 ---
