@@ -7,5 +7,6 @@ images:
   - "/productos/meses_oli.jpg"
   - "/productos/cumplemeses.jpg"
   - "/productos/daniela.jpg"
+  - "/productos/ariadna.jpg"
 featured: false
 ---
