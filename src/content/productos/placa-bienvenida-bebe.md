@@ -12,5 +12,6 @@ images:
   - "/productos/pedro.jpg"
   - "/productos/product-1.jpg"
   - "/productos/vera_nata.jpg"
+  - "/productos/liam.jpg"
 featured: true
 ---
