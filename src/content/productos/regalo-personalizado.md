@@ -8,5 +8,8 @@ images:
   - "/productos/cumplemeses.jpg"
   - "/productos/daniela.jpg"
   - "/productos/ariadna.jpg"
+  - "/productos/cumplemes_oliverr.jpg"
+  - "/productos/cumplemes_oliverr2.jpg"
+  - "/productos/cumplemes.jpg"
 featured: false
 ---

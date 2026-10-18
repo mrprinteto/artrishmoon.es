@@ -13,5 +13,8 @@ images:
   - "/productos/product-1.jpg"
   - "/productos/vera_nata.jpg"
   - "/productos/liam.jpg"
+  - "/productos/natalicio_hugo.jpeg"
+  - "/productos/natalicio_hugo_vera.jpeg"
+  - "/productos/natalicio_adrian.jpg"
 featured: true
 ---

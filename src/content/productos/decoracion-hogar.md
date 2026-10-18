@@ -7,5 +7,6 @@ images:
   - "/productos/adrian.jpg"
   - "/productos/ratas.jpg"
   - "/productos/oliver_cartel.jpg"
+  - "/productos/cartel_sin_pintar_oliver.jpg"
 featured: false
 ---

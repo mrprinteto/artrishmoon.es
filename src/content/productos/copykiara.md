@@ -11,5 +11,9 @@ images:
   - "/productos/maca.png"
   - "/productos/casca.jpg"
   - "/productos/bolitas.jpg"
+  - "/productos/biberon_oliver.jpeg"
+  - "/productos/bola_oliver.jpeg"
+  - "/productos/bola_oliver2.jpeg"
+  - "/productos/bola_oliver3.jpeg"
 featured: false
 ---
