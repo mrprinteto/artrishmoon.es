@@ -15,5 +15,6 @@ images:
   - "/productos/bola_oliver.jpeg"
   - "/productos/bola_oliver2.jpeg"
   - "/productos/bola_oliver3.jpeg"
+  - "/productos/bola_body.jpeg"
 featured: false
 ---
