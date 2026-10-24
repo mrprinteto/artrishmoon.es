@@ -16,5 +16,13 @@ images:
   - "/productos/bola_oliver2.jpeg"
   - "/productos/bola_oliver3.jpeg"
   - "/productos/bola_body.jpeg"
+  - "/productos/bola_maca.png"
+  - "/productos/bola_zac.jpg"
+  - "/productos/bola_tango.png"
+  - "/productos/bola_luna.png"
+  - "/productos/bola_yan.png"
+  - "/productos/bola_aiko.png"
+  - "/productos/bola_nombres.jpg"
+  - "/productos/bola_reyes.jpg"
 featured: false
 ---
