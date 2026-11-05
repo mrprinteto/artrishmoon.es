@@ -16,5 +16,6 @@ images:
   - "/productos/natalicio_hugo.jpeg"
   - "/productos/natalicio_hugo_vera.jpeg"
   - "/productos/natalicio_adrian.jpg"
+  - "/productos/natalicio_nico.jpg"
 featured: true
 ---
